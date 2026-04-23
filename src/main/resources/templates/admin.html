@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Admin</title>
 </head>
 <body>
-$END$
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <p>Witaj, jesteś zalogowany!</p>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Wyloguj się</button>
+    </form>
+</div>
+
+<div th:unless="${#authorization.expression('isAuthenticated()')}">
+    <a href="/login">Zaloguj się</a>
+</div>
+
+<hr>
+<nav>
+    <a href="/publiczna">Publiczna</a> |
+    <a href="/prywatna">Prywatna</a> |
+</nav>
 </body>
 </html>

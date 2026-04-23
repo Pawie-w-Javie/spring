@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <title>Logowanie</title>
 </head>
 <body>
-$END$
+<h2>Zaloguj się</h2>
+
+<div th:if="${param.error}" style="color: red;">
+    Błędny login lub hasło!
+</div>
+
+<div th:if="${param.logout}" style="color: green;">
+    Zostałeś wylogowany.
+</div>
+
+<form th:action="@{/login}" method="post">
+    <div>
+        <label>Użytkownik:</label>
+        <input type="text" name="username" required />
+    </div>
+    <div>
+        <label>Hasło:</label>
+        <input type="password" name="password" required />
+    </div>
+    <button type="submit">Zaloguj</button>
+</form>
+
+<br>
+<a href="/publiczna">Wróć na stronę główną</a>
 </body>
 </html>
