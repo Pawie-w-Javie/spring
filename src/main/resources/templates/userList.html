@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista Użytkowników</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .btn { padding: 5px 10px; text-decoration: none; border-radius: 3px; }
+        .btn-add { background: green; color: white; }
+        .btn-edit { background: orange; color: white; }
+        .btn-delete { background: red; color: white; }
+    </style>
+</head>
+<body>
+<h1>Zarządzanie Użytkownikami</h1>
+
+<a th:href="@{/admin/users/add}" class="btn btn-add">Dodaj nowego użytkownika</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nazwa użytkownika</th>
+        <th>Rola</th>
+        <th>Akcje</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u : ${users}">
+        <td th:text="${u.id}"></td>
+        <td th:text="${u.username}"></td>
+        <td th:text="${u.role}"></td>
+        <td>
+            <a th:href="@{/admin/users/edit/{id}(id=${u.id})}" class="btn btn-edit">Edytuj</a>
+            <a th:href="@{/admin/users/delete/{id}(id=${u.id})}"
+               class="btn btn-delete"
+               onclick="return confirm('Czy na pewno chcesz usunąć?')">Usuń</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/publiczna}">Powrót do strony głównej</a></p>
+</body>
+</html>

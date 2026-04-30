@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Formularz Użytkownika</title>
+  <style>
+    .form-group { margin-bottom: 15px; }
+    label { display: block; }
+    input, select { padding: 8px; width: 300px; }
+    .btn-save { background: blue; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+<h1 th:text="${user.id == null ? 'Dodaj Użytkownika' : 'Edytuj Użytkownika'}"></h1>
+
+<form th:action="@{/admin/users/save}" th:object="${user}" method="post">
+  <input type="hidden" th:field="*{id}" />
+
+  <div class="form-group">
+    <label>Nazwa użytkownika:</label>
+    <input type="text" th:field="*{username}" required />
+  </div>
+
+  <div class="form-group">
+    <label>Hasło:</label>
+    <input type="password" th:field="*{password}"  />
+    <small th:if="${user.id != null}" style="color: red; display: block;">
+      Uwaga: Wpisanie hasła nadpisze obecne!
+    </small>
+  </div>
+
+  <div class="form-group">
+    <label>Rola:</label>
+    <select th:field="*{role}">
+      <option value="USER">USER</option>
+      <option value="ADMIN">ADMIN</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn-save">Zapisz</button>
+</form>
+
+<p><a th:href="@{/admin/users}">Anuluj i wróć do listy</a></p>
+</body>
+</html>
