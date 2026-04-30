@@ -16,7 +16,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/publiczna", "/login", "/h2-console/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/admin/**", "/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/prywatna").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
