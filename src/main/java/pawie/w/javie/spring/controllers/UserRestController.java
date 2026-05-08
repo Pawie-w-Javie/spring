@@ -1,5 +1,7 @@
 package pawie.w.javie.spring.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pawie.w.javie.spring.models.UserEntity;
 import pawie.w.javie.spring.services.UserService;
@@ -14,24 +16,31 @@ public class UserRestController {
         this.userService = userService;
     }
 
+    // Zwraca 200
     @GetMapping
-    public List<UserEntity> getAll() {
-        return userService.findAll();
+    public ResponseEntity<List<UserEntity>> getAll() {
+        List<UserEntity> users = userService.findAll();
+        return ResponseEntity.ok(users);
     }
 
-
-    @GetMapping("/get/{id}")
-    public UserEntity getOne(@PathVariable Long id) {
-        return userService.findById(id);
+    // Zwraca 200 lub 404
+    @GetMapping("/{id}")
+    public ResponseEntity<UserEntity> getOne(@PathVariable Long id) {
+        UserEntity user = userService.findById(id);
+        return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/add")
-    public void create(@RequestBody UserEntity user) {
+    // Zwraca 201
+    @PostMapping
+    public ResponseEntity<UserEntity> create(@RequestBody UserEntity user) {
         userService.save(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id) {
+    // Zwraca 204
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

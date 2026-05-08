@@ -2,6 +2,7 @@ package pawie.w.javie.spring.services;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pawie.w.javie.spring.exceptions.UserNotFoundException;
 import pawie.w.javie.spring.models.UserEntity;
 import pawie.w.javie.spring.repositories.UserRepository;
 import java.util.List;
@@ -24,7 +25,7 @@ public class UserService {
     }
 
     public UserEntity findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Nie znaleziono"));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     public void delete(Long id) { userRepository.deleteById(id); }
