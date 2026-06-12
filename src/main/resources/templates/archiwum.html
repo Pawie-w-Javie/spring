@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Moje Archiwum Obiektów</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f6f9; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #007bff; color: white; }
+        .btn { padding: 6px 12px; color: white; background: #28a745; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
+        .btn-download { background: #007bff; }
+        .share-form { display: inline-block; }
+        .input-text { padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Twoje Prywatne Archiwum Obiektów</h2>
+    <p>Zalogowany jako: <strong th:text="${#authentication.name}">Użytkownik</strong></p>
+
+    <fieldset style="margin-bottom: 20px; padding: 15px; border-radius: 6px; border: 1px solid #ccc;">
+        <legend>Dodaj nowy obiekt (plik) do swojego archiwum</legend>
+        <form th:action="@{/obiekty/upload}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" required />
+            <button type="submit" class="btn">Wyślij plik do bazy</button>
+        </form>
+    </fieldset>
+
+    <h3>Lista Twoich obiektów</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nazwa pliku</th>
+            <th>Typ</th>
+            <th>Data utworzenia</th>
+            <th>Akcje</th>
+            <th>Udostępnij obiekt</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="obj : ${objects}">
+            <td th:text="${obj.id}">1</td>
+            <td th:text="${obj.name}">plik.pdf</td>
+            <td th:text="${obj.contentType}">application/pdf</td>
+            <td th:text="${#temporals.format(obj.createdAt, 'yyyy-MM-dd HH:mm')}" >2026-05-28 12:00</td>
+            <td>
+                <a th:href="@{/obiekty/download/{id}(id=${obj.id})}" class="btn btn-download">Pobierz</a>
+            </td>
+            <td>
+                <form th:action="@{/obiekty/share}" method="post" class="share-form">
+                    <input type="hidden" name="objectId" th:value="${obj.id}"/>
+                    <input type="text" name="targetUsername" placeholder="Login drugiego użytkownika" class="input-text" required/>
+                    <button type="submit" class="btn" style="background-color: #17a2b8;">Udostępnij</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(objects)}">
+            <td colspan="6" style="text-align: center; color: #777;">Nie masz jeszcze żadnych obiektów w archiwum.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br/>
+    <a th:href="@{/publiczna}" style="color: #007bff;">Powrót do strony głównej</a>
+</div>
+
+</body>
+</html>

@@ -33,7 +33,7 @@ public class SecurityConfig {
                         .requestMatchers("/publiczna", "/login").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/admin/**", "/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/prywatna").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/prywatna","/obiekty/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(basic -> basic.authenticationEntryPoint((request, response, authException) -> {
