@@ -18,12 +18,13 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        // Zabezpieczneie zbey w kółko nie dodawać użytkowników
+        if (repo.count() == 0) {
+            UserEntity u = new UserEntity(null, "user", encoder.encode("123"), "USER");
+            repo.save(u);
 
-        UserEntity u = new UserEntity(null, "user", encoder.encode("123"), "USER");
-        repo.save(u);
-
-
-        UserEntity a = new UserEntity(null, "admin", encoder.encode("admin"), "ADMIN");
-        repo.save(a);
+            UserEntity a = new UserEntity(null, "admin", encoder.encode("admin"), "ADMIN");
+            repo.save(a);
+        }
     }
 }
